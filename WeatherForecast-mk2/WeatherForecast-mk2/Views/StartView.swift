@@ -1,36 +1,37 @@
-//
-//  StartView.swift
-//  WeatherForecast-mk2
-//
-//  Created by Роман Корсак on 17.06.22.
-//
-
-import SwiftUI
 import CoreLocationUI
+import SwiftUI
 
 struct StartView: View {
     @EnvironmentObject var locationManager: LocationManager
     
-    
-    
     var body: some View {
-        VStack{
-            VStack(spacing: 40){
-                Text("Welcome to Weather Forecast App!")
-                    .font(.system(size: 25))
-                    .fontWeight(.thin)
-                Image("weatherForStartScreen")
-                Text("Please, share your location!")
-                LocationButton(.currentLocation){
-                    locationManager.requestlocation()
-                }.tint(.orange)
-                    .cornerRadius(15)
-            }
+        ZStack {
+            Color.blue
             
+            VStack {
+                VStack(spacing: 40) {
+                    Text("Welcome to Weather Forecast App!")
+                        .font(.system(size: 25))
+                        .fontWeight(.thin)
+                    Image("weatherForStartScreen")
+                        .resizable()
+                        .frame(width: 350, height: 240)
+                }
+                VStack {
+                    Text("Please, share your location!")
+                    // .fontWeight(.thin)
+                    LocationButton(.shareCurrentLocation) {
+                        locationManager.requestlocation()
+                    }.tint(.orange)
+                        .cornerRadius(15)
+                }
+                VStack {
+                    Text("by Roman Korsak")
+                        .fontWeight(.thin)
+                }
+            }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.blue)
-        
+        .ignoresSafeArea()
     }
 }
 
