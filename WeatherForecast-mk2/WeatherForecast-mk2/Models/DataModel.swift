@@ -1,5 +1,6 @@
 import Foundation
 
+var previewWeather: ResponseBody = load("WeatherData.json")
 
 func load<T: Decodable>(_ filename: String) -> T {
     let data: Data

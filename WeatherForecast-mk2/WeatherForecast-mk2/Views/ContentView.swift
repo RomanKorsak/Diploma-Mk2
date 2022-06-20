@@ -9,7 +9,7 @@ struct ContentView: View {
         VStack {
             if let location = locationManager.location {
                 if let weather = weather {
-                    Text("weather data fetched")
+                    WeatherView(weather: weather)
                 } else {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
