@@ -3,13 +3,15 @@ import Foundation
 
 class WeatherManager {
     func getCurrentWeather(lat: CLLocationDegrees, long: CLLocationDegrees) async throws -> ResponseBody {
-        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=f5b163312a57771cfc7180e7d1b2b560") else { print("Miss URL") }
+        guard let url = URL(string: "https://api.openweathermap.org/data/2.5/weather?lat=\(lat)&lon=\(long)&appid=f5b163312a57771cfc7180e7d1b2b560") else { fatalError("error with url") }
         
         let urlRequest = URLRequest(url: url)
         
         let (data, response) = try await URLSession.shared.data(for: urlRequest)
         
-        guard (response as? HTTPURLResponse)?.statusCode == 200 else { print("error with response") }
+        guard (response as? HTTPURLResponse)?.statusCode == 200 else { fatalError("error with status code") }
+        
+        
         
         let decodedData = try JSONDecoder().decode(ResponseBody.self, from: data)
         
@@ -22,26 +24,31 @@ class WeatherManager {
         var main: MainResponse
         var name: String
         var wind: WindResponse
-}
+    }
     
     struct CoodrinatesResponse: Decodable {
         var latitude: Double
         var longitude: Double
     }
     
-    struct WeatherResponse {
+    struct WeatherResponse: Decodable {
         var id: Double
         var main: String
         var description: String
         var icon: String
     }
     
-    
-    struct MainResponse {
-        "temp": 282.55,
-            "feels_like": 281.86,
-            "temp_min": 280.37,
-            "temp_max": 284.26,
-            "pressure": 1023,
-            "humidity": 100
+    struct MainResponse: Decodable {
+        var temp: Double
+        var feels_like: Double
+        var temp_min: Double
+        var temp_max: Double
+        var pressure: Double
+        var humidity: Double
     }
+
+    struct WindResponse: Decodable {
+        var speed: Double
+        var deg: Double
+    }
+}
